@@ -1,5 +1,5 @@
 @extends('Backend.layout.master')
-@section('page_title', 'Category')
+@section('page_title', 'Tag')
 @section('page_sub_title', 'List')
 @section('contant')
     <div class="row justify-content-center">
@@ -7,10 +7,10 @@
             <div class="card">
                 <div class="card-header d-flex">
                     <div class="col-6">
-                        <h4>Category List</h4>
+                        <h4>Tag List</h4>
                     </div>
-                    <div class="col-6 text-end"> <a href="" class="btn btn-success btn-sm ">Add
-                            Category</a></div>
+                    <div class="col-6 text-end"> <a href="{{ route('tag.create') }}" class="btn btn-success btn-sm ">Add
+                            Tag</a></div>
                 </div>
                 <div class="card-body">
                     @if (Session('msg'))
@@ -32,36 +32,40 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $category)
-                            <tr>
-                                <td>{{ $category->id }}</td>
-                                <td>{{ $category->name }}</td>
-                                <td>{{ $category->slug }}</td>
-                                <td><span class="btn btn-warning">{{ $category->status == 1 ? 'Active' : 'Inactive' }}</span></td>
-                                <td>{{ $category->created_at }}</td>
-                                <td>{{ $category->updated_at }}</td>
-                                    <td></td>
+                            @php  $sl = 1  @endphp
+                            @foreach ($categories as $tag)
+                                <tr>
+                                    <td>{{ $sl++ }}</td>
+                                    <td>{{ $tag->name }}</td>
+                                    <td>{{ $tag->slug }}</td>
+                                    <td>{{ $tag->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                    <td>{{ $tag->order_by }}</td>
+                                    <td>{{ $tag->created_at->toDayDateTimeString() }}</td>
+                                    <td>{{ $tag->created_at != $tag->updated_at ? $tag->updated_at->toDayDateTimeString() : 'Not Updated' }}
+                                    </td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <a href="{{ route('category.show', $category->id) }}"><button
+                                            <a href="{{ route('tag.show', $tag->id) }}"><button
                                                     class="btn btn-info btn-sm"><i class="fa-solid fa-eye"></i></button></a>
-                                            <a href="{{ route('category.edit', $category->id) }}"><button
+                                            <a href="{{ route('tag.edit', $tag->id) }}"><button
                                                     class="btn btn-warning btn-sm mx-1"><i
-                                                    class="fa-solid fa-edit"></i></button></a>
-                                                    {!! Form::open([
-                                                        'method' => 'delete',
-                                                        'id' => 'form_',
-                                                        ]) !!}
+                                                        class="fa-solid fa-edit"></i></button></a>
+                                            {!! Form::open([
+                                                'method' => 'delete',
+                                                'id' => 'form_' . $tag->id,
+                                                'route' => ['tag.destroy', $tag->id],
+                                            ]) !!}
                                             {!! Form::button('<i class="fa-solid fa-trash"></i>', [
                                                 'type' => 'button',
+                                                'data-id' => $tag->id,
                                                 'class' => ' delete btn btn-danger btn-sm',
-                                                ]) !!}
+                                            ]) !!}
                                             {!! Form::close() !!}
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
-                            </tbody>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>

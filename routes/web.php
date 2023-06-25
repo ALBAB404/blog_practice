@@ -16,8 +16,7 @@ Route::get('/single-post', [FrontendController::class, 'single'])->name('Front.s
 route::group(['prefix'=>'dashboard'], function(){
     Route::get('/admin', [BackEndController::class, 'index'])->name('Backend.index');
     Route::resource('category', CategoryController::class);
-    // Route::resource('category', CategoryController::class);
-    // Route::resource('tag', TagController::class);
+    Route::resource('tag', TagController::class);
     // Route::resource('sub_category', SubCategoryController::class);
     // Route::resource('post', PostController::class);
 });
