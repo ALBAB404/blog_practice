@@ -1,5 +1,5 @@
 @extends('Backend.layout.master')
-@section('page_title', 'Sub Category')
+@section('page_title', 'Tag')
 @section('page_sub_title', 'List')
 @section('contant')
     <div class="row justify-content-center">
@@ -7,10 +7,10 @@
             <div class="card">
                 <div class="card-header d-flex">
                     <div class="col-6">
-                        <h4>Category List</h4>
+                        <h4>Tag List</h4>
                     </div>
                     <div class="col-6 text-end"> <a href="{{ route('sub_category.create') }}" class="btn btn-success btn-sm ">Add
-                           Sub Category</a></div>
+                            Tag</a></div>
                 </div>
                 <div class="card-body">
                     @if (Session('msg'))
@@ -33,39 +33,39 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php  $sl = 1  @endphp
                             @foreach ($sub_categories as $sub_category)
-                            <tr>
-                                <td>{{ $sub_category->id }}</td>
-                                <td>{{ $sub_category->name }}</td>
-                                <td>{{ $sub_category->category->name }}</td>
-                                <td>{{ $sub_category->slug }}</td>
-                                <td><span class="btn btn-warning">{{ $sub_category->status == 1 ? 'Active' : 'Inactive' }}</span></td>
-                                <td>{{ $sub_category->created_at }}</td>
-                                <td>{{ $sub_category->updated_at }}</td>
-                                    <td></td>
+                                <tr>
+                                    <td>{{ $sl++ }}</td>
+                                    <td>{{ $sub_category->name }}</td>
+                                    <td>{{ $sub_category->category->name }}</td>
+                                    <td>{{ $sub_category->slug }}</td>
+                                    <td><{{ $sub_category->status == 1 ? 'Active' : 'Inactive' }}</td>
+                                    <td>{{ $sub_category->order_by }}</td>
+                                    <td>{{ $sub_category->created_at->toDayDateTimeString() }}</td>
+                                    <td>{{ $sub_category->created_at != $sub_category->updated_at ? $sub_category->updated_at->toDayDateTimeString() : 'Not Updated' }}
+                                    </td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <a href="{{ route('sub_category.show', $sub_category->id) }}"><button
                                                     class="btn btn-info btn-sm"><i class="fa-solid fa-eye"></i></button></a>
-                                            <a href="{{ route('sub_category.edit', $sub_category->id) }}"><button
+                                            <a href="{{ route('sub_category.show', $sub_category->id) }}"><button
                                                     class="btn btn-warning btn-sm mx-1"><i
-                                                    class="fa-solid fa-edit"></i></button></a>
-                                                    {!! Form::open([
-                                                        'method' => 'delete',
-                                                        'id' => 'form_'.$sub_category->id,
-                                                'route' => ['sub_category.destroy', $sub_category->id],
-                                                        ]) !!}
+                                                        class="fa-solid fa-edit"></i></button></a>
+                                            {!! Form::open([
+                                                'method' => 'delete',
+                                                'id' => 'form_',
+                                            ]) !!}
                                             {!! Form::button('<i class="fa-solid fa-trash"></i>', [
                                                 'type' => 'button',
-                                                'data-id' => $sub_category->id,
                                                 'class' => ' delete btn btn-danger btn-sm',
-                                                ]) !!}
+                                            ]) !!}
                                             {!! Form::close() !!}
                                         </div>
                                     </td>
                                 </tr>
-                                @endforeach
-                            </tbody>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>

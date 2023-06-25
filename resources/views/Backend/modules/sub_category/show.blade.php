@@ -1,15 +1,15 @@
 @extends('Backend.layout.master')
-@section('page_title', 'sub_category')
+@section('page_title', 'Category')
 @section('page_sub_title', 'Details')
 @section('contant')
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>sub_category Details</h4>
+                    <h4>Category Details</h4>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered table-hover">
+                    <table class="table table-striped table-bordered table-hover table-sm">
                         <tbody>
                             <tr>
                                 <th>ID</th>
@@ -32,10 +32,6 @@
                                 <td>{{ $sub_category->order_by }}</td>
                             </tr>
                             <tr>
-                                <th>Category Name</th>
-                                <td>{{ $sub_category->category->name }}</td>
-                            </tr>
-                            <tr>
                                 <th>Created At</th>
                                 <td>{{ $sub_category->created_at->toDayDateTimeString() }}</td>
                             </tr>
@@ -46,7 +42,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a href="{{ route('sub_category.index') }}" class="btn btn-info btn-md text-light"> Back </a>
+                    <a href="{{ route('sub_category.index') }}" class="btn btn-info btn-sm text-light"> Back </a>
                 </div>
             </div>
         </div>

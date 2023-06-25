@@ -14,7 +14,8 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        $sub_categories =  sub_category::orderBy('order_by')->get();
+       $sub_categories =   sub_category::with('category')->get();
+    //    dd($sub_categories);
         return view('Backend.modules.sub_category.index', compact('sub_categories'));
     }
 
@@ -23,7 +24,7 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        $categories = Category::pluck('name', 'id');
+         $categories =  Category::pluck('name', 'id');
         return view('Backend.modules.sub_category.create', compact('categories'));
     }
 
@@ -32,20 +33,20 @@ class SubCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name'=>'required|min:3|max:255',
-            'slug'=>'required|min:3|max:255|unique:sub_categories',
+        $this->validate($request, [
+            'name' => 'required|min:5|max:20',
+            'slug' => 'required|min:5|max:20|unique:sub_categories',
             'order_by'=>'required|numeric',
             'status'=>'required',
-            'category_id'=>'required',
         ]);
 
-        $sub_category_data =  $request->all();
-
+        $sub_category_data = $request->all();
         $sub_category_data['slug'] = Str::slug($request->input('slug', '-'));
-
         sub_category::create($sub_category_data);
-        return view('Backend.modules.sub_category.index');
+        session()->flash('cls','success');
+        session()->flash('msg','Category Insert Successfully');
+        return redirect()->route('sub_category.index');
+
     }
 
     /**
@@ -61,8 +62,7 @@ class SubCategoryController extends Controller
      */
     public function edit(sub_category $sub_category)
     {
-        $categories = Category::pluck('name', 'id');
-        return view('Backend.modules.sub_category.edit', compact('sub_category', 'categories'));
+
     }
 
     /**
@@ -70,21 +70,7 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request, sub_category $sub_category)
     {
-        $this->validate($request,[
-            'name'=>'required|min:3|max:255',
-            'slug'=>'required|min:3|max:255|unique:sub_categories',
-            'order_by'=>'required|numeric',
-            'status'=>'required',
-            'category_id'=>'required',
-        ]);
 
-        $sub_category_data =  $request->all();
-
-        $sub_category_data['slug'] = Str::slug($request->input('slug', '-'));
-
-        $sub_category->update($sub_category_data);
-
-        return redirect()->route('sub_category.index');
 
     }
 
@@ -93,7 +79,6 @@ class SubCategoryController extends Controller
      */
     public function destroy(sub_category $sub_category)
     {
-        $sub_category->delete();
-        return redirect()->route('sub_category.index');
+
     }
 }
