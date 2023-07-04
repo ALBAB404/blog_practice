@@ -43,9 +43,9 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex justify-content-center">
-                                            <a href=""><button
+                                            <a href="{{ route('category.show', $category->id) }}"><button
                                                     class="btn btn-info btn-sm"><i class="fa-solid fa-eye"></i></button></a>
-                                            <a href=""><button
+                                            <a href="{{ route('category.edit', $category->id) }}"><button
                                                     class="btn btn-warning btn-sm mx-1"><i
                                                     class="fa-solid fa-edit"></i></button></a>
                                                     {!! Form::open([

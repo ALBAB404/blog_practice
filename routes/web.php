@@ -18,9 +18,14 @@ route::group(['prefix'=>'dashboard'], function(){
     Route::get('/admin', [BackEndController::class, 'index'])->name('Backend.index');
     Route::resource('category', CategoryController::class);
     Route::resource('tag', TagController::class);
+<<<<<<< HEAD
     Route::get('/get-subcategory/{id}', [SubCategoryController::class, 'getsub_categoryIdByCategoryId']);
     Route::resource('sub_category', SubCategoryController::class);
     Route::resource('post', PostController::class);
+=======
+    Route::resource('sub_category', SubCategoryController::class);
+    // Route::resource('post', PostController::class);
+>>>>>>> 0240729808d1d28ed1ec4840e74e38e19108a209
 });
 
 Route::get('/dashboard', function () {
