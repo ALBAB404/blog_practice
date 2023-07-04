@@ -27,7 +27,7 @@
                         <a class="nav-link" href="{{ route('category.create') }}">Add Category</a>
                     </nav>
                 </div>
-{{--
+
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#sub_category"
                     aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon">
@@ -71,6 +71,6 @@
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
             CodewithAlbab
-        </div> --}}
+        </div>
     </nav>
 </div>
