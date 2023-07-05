@@ -21,8 +21,8 @@
                     @endif
 
                     {!! Form::open(['method' => 'Post', 'route' => 'post.store', 'files'=>'true']) !!}
-                    {!! Form::label('name', 'Name', ['class' => 'my-2']) !!}
-                    {!! Form::text('name', null, [
+                    {!! Form::label('title', 'Title', ['class' => 'my-2']) !!}
+                    {!! Form::text('title', null, [
                         'id' => 'name',
                         'class' => 'form-control',
                         'placeholder' => 'Enter Post Name',
@@ -43,14 +43,12 @@
                             ]) !!}
                         </div>
                         <div class="col-md-6">
-                            {!! Form::label('category_id', 'Select Category', ['class' => 'my-2']) !!}
-                            <select name="category_id" id="SubCategory" class="form-select">
+                            {!! Form::label('sub_category_id', 'Select Sub Category', ['class' => 'my-2']) !!}
+                            <select name="sub_category_id" id="SubCategory" class="form-select">
                                 <option class="form-select">Select Sub Category</option>
                             </select>
                         </div>
                     </div>
-                    {!! Form::label('order_by', 'Post Serial', ['class' => 'my-2']) !!}
-                    {!! Form::number('order_by', null, ['class' => 'form-control ', 'placeholder' => 'Select Post Serial']) !!}
                     {!! Form::label('status', 'Post Serial', ['class' => 'my-2']) !!}
                     {!! Form::select('status', [1 => 'Active', 0 => 'Inactive'], null, [
                         'class' => 'form-control ',
@@ -60,11 +58,13 @@
                         {!! Form::label('tag', 'Tags', ['class' => 'my-2']) !!}
                         @foreach ($tags as $tag)
                         <div class="col-md-3">
-                           {!! Form::checkbox('tags[]', $tag->id, false) !!} <span>{{ $tag->name }}</span>
+                           {!! Form::checkbox('tag_ids[]', $tag->id, false) !!} <span>{{ $tag->name }}</span>
                         </div>
                            @endforeach
                     </div>
-                    {!! Form::file('file', ['class' => 'form-control my-2']) !!}
+                    {!! Form::label('discribtion', 'Discribtion',['class'=>'my-3']) !!}
+                    {!! Form::textarea('discribtion', null, ['class'=>'TextDiscribtion','id'=>'discribtion']) !!}
+                    {!! Form::file('photo', ['class' => 'form-control my-2']) !!}
                     {!! Form::button('Create Post', ['type' => 'submit', 'class' => 'btn btn-success mt-3']) !!}
                     {!! Form::close() !!}
 
@@ -75,8 +75,17 @@
 
 @endsection
 
-
+@push('css')
+<style>
+    .ck.ck-editor__main>.ck-editor__editable{
+        min-height: 200px;
+        border-color: var(--ck-color-base-border);
+    }
+</style>
+@endpush
 @push('js')
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
+
     <script>
 
         $('#category_id').on('change', function (){
@@ -95,6 +104,13 @@
                 let slug = name.replaceAll(' ', '-')
                 $('#slug').val(slug.toLowerCase());
             })
+
+
+    ClassicEditor
+        .create( document.querySelector( '#discribtion' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 
     </script>
 @endpush

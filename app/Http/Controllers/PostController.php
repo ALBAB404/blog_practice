@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\Postrequest;
 use App\Http\Requests\postUpdateRequest;
 use App\Models\sub_category;
 use App\Models\Tag;
@@ -35,10 +36,31 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Postrequest $request)
     {
 
-        dd($request->all());
+        $post_data = $request->except('photo','slug','tag_ids');
+        $post_data['slug'] = Str::slug($request->input('slug'));
+        $post_data['user_id'] = Auth::user()?->id;
+        $post_data['is_approved'] = 1;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $name = Str::slug($request->input('slug'));
+            $height = 400;
+            $width = 1000;
+            $thumb_height = 150;
+            $thumb_width = 300;
+            $path = 'image/post/Original/';
+            $thumbnail_path = 'image/post/Thumbnail/';
+
+            $post_data['photo'] =  PhotoUploadController::imageUpload($name,$height,$width,$path,$file);
+                                   PhotoUploadController::imageUpload($name,$thumb_height,$thumb_width,$thumbnail_path,$file);
+        }
+
+        $post = Post::create($post_data);
+
+        $post->tag()->attach($request->input('tag_ids'));
 
     }
 
