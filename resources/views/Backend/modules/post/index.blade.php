@@ -60,25 +60,25 @@
                                        <p>{{ $post->slug }}</p>
                                     </td>
                                     <td>
-                                       <p><a href="{{ route('category.show', $post->category_id) }}">{{ $post->category?->name }}</a></p>
+                                       <p><a href="">{{ $post->category?->name }}</a></p>
                                         <hr>
-                                       <p><a href="{{ route('sub_category.show', $post->sub_category_id) }}">{{ $post->sub_category?->name }}</a></p>
+                                       <p><a href="">{{ $post->sub_category?->name }}</a></p>
                                     </td>
                                     <td>
-                                       <p>{{ $post->status ==1 ? 'Published' : 'Not Published' }}</p>
+                                       <p>{{ $post->status == 1 ? 'Active' : 'Inactive' }}</p>
                                         <hr>
-                                       <p>{{ $post->is_approved == 1 ? 'Approved' : 'Not Apporved' }}</p>
+                                       <p>{{ $post->is_approved == 1 ? 'Published' : 'Not Publish'  }}</p>
                                     </td>
                                     <td>
-                                        <img class="img-thumbnail post-image" data-src="{{ url('image/post/Original/'.$post->photo) }}" src="{{ url('image/post/Thumbnail/'.$post->photo) }}" alt="{{ $post->title }}">
+                                        <img class="img-thumbnail image_show" data-src="{{ url('image/post/original/'.$post->photo) }}" src="{{ url('image/post/Thumbnail/'.$post->photo) }}" alt="{{ $post->title }}">
                                     </td>
                                     <td>
                                         @php
-                                            $colors = ['btn-danger', 'btn-info', 'btn-dark', 'btn-success', 'btn-warning']
+                                            $classes = ['btn-primary', 'btn-danger', 'btn-warning', 'btn-info', 'btn-success', 'btn-dark'];
                                         @endphp
-                                        @foreach ($post->tag as $tag)
-                                        <a href="{{ route('tag.show', $tag->id) }}"><button class="btn -btn-sm mb-3 {{ $colors[random_int(0,4)] }}">{{ $tag->name }}</button></a>
-                                        @endforeach
+                                        @foreach ($post->tag as $tag )
+                                            <a href=""><button class="btn btn-sm {{ $classes[random_int(0,5)] }} mb-2">{{ $tag->name }}</button></a>
+                                         @endforeach
                                      </td>
                                     <td>
                                         <p>{{ $post->created_at->toDayDateTimeString() }}</p>
@@ -94,17 +94,6 @@
                                             <a href="{{ route('post.edit', $post->id) }}"><button
                                                     class="btn btn-warning btn-sm mx-1"><i
                                                         class="fa-solid fa-edit"></i></button></a>
-                                            {!! Form::open([
-                                                'method' => 'delete',
-                                                'id' => 'form_' . $post->id,
-                                                'route' => ['post.destroy', $post->id],
-                                            ]) !!}
-                                            {!! Form::button('<i class="fa-solid fa-trash"></i>', [
-                                                'type' => 'button',
-                                                'data-id' => $post->id,
-                                                'class' => ' delete btn btn-danger btn-sm',
-                                            ]) !!}
-                                            {!! Form::close() !!}
                                         </div>
                                     </td>
                                 </tr>
@@ -116,7 +105,7 @@
             </div>
         </div>
     </div>
-<!-- Button trigger modal -->
+{{-- <!-- Button trigger modal -->
   <button id="image_show_button" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#image_show">
 
   </button>
@@ -133,15 +122,33 @@
         </div>
       </div>
     </div>
+  </div> --}}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary d-none" id="img_show_button" data-bs-toggle="modal" data-bs-target="#img_show"> </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="img_show" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Blog Image</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img  class="img-thumbnail" id="image_display" alt="Display Image">
+        </div>
+      </div>
+    </div>
   </div>
 
     @push('js')
         <script>
 
-            $('.post-image').on('click', function(){
-                let img =  $(this).attr('data-src')
-                $('#display_image').attr('src', img)
-                $('#image_show_button').trigger('click')
+            $('.image_show').on('click', function(){
+              let img = $(this).attr('data-src')
+                $('#img_show_button').trigger('click')
+                $('#image_display').attr('src', img)
             })
 
             $('.delete').on('click', function() {

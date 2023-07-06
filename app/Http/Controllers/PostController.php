@@ -20,7 +20,8 @@ class PostController extends Controller
      */
     public function index()
     {
-
+       $posts =  post::with('category','sub_category','user','tag')->latest()->paginate(2);
+       return view('Backend.modules.post.index', compact('posts'));
     }
 
     /**
@@ -61,6 +62,7 @@ class PostController extends Controller
         $post = Post::create($post_data);
 
         $post->tag()->attach($request->input('tag_ids'));
+        return view('Backend.modules.post.index');
 
     }
 
@@ -70,6 +72,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
 
+        return view('Backend.modules.post.show', compact('post'));
 
     }
 
@@ -78,7 +81,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-
+        // dd($post);
+        $categories =  Category::pluck('name','id');
+        $tags = Tag::select('id','name')->where('status', 1)->get();
+        return view('Backend.modules.post.edit', compact('post','categories', 'tags'));
     }
 
     /**
